@@ -1,23 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState} from 'react';
+import SearchBar from './components/SearchBar';
+import RepositoryList from './components/RepositoryList';
 
 function App() {
+  const [repoArr, setRepoArr] = useState([]);
+
+  const onRepoDatas = (items) => {
+    let tempArr = [];
+    for (let i = 0; i<items.length ; i++) {
+      tempArr.push({
+        id: items[i].id,
+        title: items[i].name,
+        createDate: items[i].created_at,
+        url: items[i].html_url,
+        writer: items[i].owner ?  items[i].owner.login : 'unknown',
+      })
+    }
+    setRepoArr([...tempArr]);
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="containerr">
+        <SearchBar onDatas={onRepoDatas}/>
+        <RepositoryList repoList={repoArr} />
+      </div>
     </div>
   );
 }
